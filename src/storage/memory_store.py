@@ -39,7 +39,6 @@ class MemoryTaskStore:
         task = TaskRecord(
             name=request.name,
             args=request.args,
-            kwargs=request.kwargs,
         )
 
         self.tasks[task.id] = task

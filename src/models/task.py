@@ -27,12 +27,10 @@ class TaskCreateRequest(BaseModel):
     Attributes:
         name: Name of the task function to execute.
         args: Positional arguments passed to the task function.
-        kwargs: Keyword arguments passed to the task function.
     """
 
     name: str
     args: list[Any] = Field(default_factory=list)
-    kwargs: dict[str, Any] = Field(default_factory=dict)
 
 
 class TaskRecord(BaseModel):
@@ -42,7 +40,6 @@ class TaskRecord(BaseModel):
         id: Unique task identifier.
         name: Name of the task function to execute.
         args: Positional arguments for the task function.
-        kwargs: Keyword arguemtns for the task function.
         status: Current task lifecycle status.
         result: Task result after successful execution.
         error: Error message if the task failed.
@@ -51,7 +48,6 @@ class TaskRecord(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
     name: str
     args: list[Any] = Field(default_factory=list)
-    kwargs: dict[str, Any] = Field(default_factory=dict)
     status: TaskStatus = TaskStatus.PENDING
     result: Any | None = None
     error: str | None = None
