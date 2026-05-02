@@ -1,17 +1,38 @@
 # distributed-task-queue
 
-A simple distributed task queue built in Python.
+A distributed task queue built in Python with a FastAPI-based broker, worker processes, and client-side polling for asynchronous task execution.
 
-This project will implement a central broker, task-submitting clients, and worker processes that pull takss from the broker, execute them, and return results.
+This project demonstrates a basic distributed system where tasks are submitted by clients, stored and managed by a central broker, and executed by independent worker processes.
 
-## Planned Features
+## Status
 
-- Submit tasks through a client
-- Store pending, running, and completed tasks in a broker
-- Run multiple worker processes
-- Execute registereed Python task functions
-- Track task status and results
-- Add retry logic and basic fault tolerance later
+This project is currently a **MVP!**
+Core task submission, execution, and result retrieval are implemented. More advanced distributed system features are planned.
+
+## Features
+
+- Submit tasks via HTTP API
+- In-memory task storage in the broker
+- Worker processes that poll and execute tasks
+- Support for positional arguments
+- Task lifecycle tracking:
+  - pending -> running -> completed / failed
+- Client-side polling for results
+
+## Project Structure
+
+```
+src/
+├── api/            # FastAPI routes
+├── client/         # Task submission + polling
+├── config.py       # Shared configuration
+├── core/           # Task registry
+├── main.py         # FastAPI app entry point
+├── models/         # Pydantic models
+├── storage/        # In-memory task store
+├── tasks/          # Example task functions
+└── worker/         # Worker process
+```
 
 ## Tech Stack
 
@@ -20,3 +41,40 @@ This project will implement a central broker, task-submitting clients, and worke
 - Uvicorn
 - Requests
 - Pydantic
+
+## Quick Start
+
+### 1. Start the broker
+
+```powershell
+uvicorn src.main:app --reload
+```
+
+### 2. Start a worker
+
+```powershell
+python -m src.worker.worker
+```
+
+### 3. Submit a task
+
+```powershell
+python -m src.client.client
+```
+
+## Notes
+
+- Tasks are stored in memory (no persistence yet!)
+- Broker is currently single-node (not replicated yet!)
+- Workers use polling instead of push-based scheduling
+
+## Future Improvements
+
+- Persistent storage (SQLite / PostgreSQL)
+- Multiple worker coordination and scaling
+- Retry logic and task timeouts
+- Worker heartbeats and failure detection
+- Message queue integration (Redis / RabbitMQ)
+- REST API improvements and CLI tools
+- Dockerized deployment
+- Observability (logging, metrics, tracing)
